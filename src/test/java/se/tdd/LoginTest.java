@@ -17,7 +17,7 @@ public class LoginTest {
     }
 
     @ParameterizedTest
-    @CsvSource(value = {"anna, losen, true", "berit, 123456, true", "kalle, password, true"})
+    @CsvSource(value = {"anna, losen, true", "berit, 123456, true", "kalle, pass, false"})
     public void usernameTest(String username, String password, boolean expected) {
 
         //When
@@ -27,8 +27,5 @@ public class LoginTest {
         Assertions.assertEquals(expected, result);
 
     }
-
-    
-
 }
 
