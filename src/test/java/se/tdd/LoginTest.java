@@ -3,6 +3,9 @@ package se.tdd;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 public class LoginTest {
     
@@ -12,20 +15,20 @@ public class LoginTest {
     void setUp (){
         login = new Login();
     }
-    
-    
-    @Test
-    public void usernameTest() {
-        //Given
-        User ett = new User("anna", "losen");
+
+    @ParameterizedTest
+    @CsvSource(value = {"anna, losen, true", "berit, 123456, true", "kalle, password, true"})
+    public void usernameTest(String username, String password, boolean expected) {
 
         //When
-        boolean result = login.validate(ett.getUsername(), ett.getPassword());
+        boolean result = login.validate(username, password);
 
         //Then
-        Assertions.assertEquals(true, result);
+        Assertions.assertEquals(expected, result);
 
     }
+
+    
 
 }
 
