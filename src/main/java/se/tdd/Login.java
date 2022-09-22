@@ -31,4 +31,15 @@ public class Login {
         throw new InvalidException ("Wrong password, try again!");
     }
 
+    public boolean valToken(String token) {
+
+        byte[] backAsBytesBase64 = token.getBytes();
+        byte[] backAsBytes = Base64.getDecoder().decode(backAsBytesBase64);
+
+        String original = new String(backAsBytes);
+
+        return allUsers
+                .stream()
+                .anyMatch(us -> us.getUsername().equals(original));
+    }
 }

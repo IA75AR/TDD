@@ -35,11 +35,11 @@ public class LoginTest {
     }
 
     @ParameterizedTest                                                                                           
-    @CsvSource(value = {"YW5uYQ==, true", "YmVyaXQ=, true", "a2FsbGU=, false"})
+    @CsvSource(value = {"YW5uYQ==, true", "YmVyaXQ=, true", "a2FsbGf=, false"})
     public void testToken (String token, boolean expected) {
                                                                                                                      
         //When
-        String result = login.valToken(token);
+        boolean result = login.valToken(token);
                                                                                                                      
         //Then
         Assertions.assertEquals(expected, result);
