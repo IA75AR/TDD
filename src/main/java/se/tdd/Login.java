@@ -1,14 +1,19 @@
 package se.tdd;
 
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+
 import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
 
 public class Login {
 
-    User user = new User("anna", "losen");
-    User user1 = new User("berit", "123456");
-    User user2 = new User("kalle", "password");
+    User user = new User("anna", "losen", "student");
+    User user1 = new User("berit", "123456", "teacher");
+    User user2 = new User("kalle", "password", "admin");
 
     List<User> allUsers = List.of(user, user1, user2);
 
@@ -42,4 +47,32 @@ public class Login {
                 .stream()
                 .anyMatch(us -> us.getUsername().equals(original));
     }
+
+    public String createToken(String username) {
+
+       String role = "teacher";
+
+       Key key = Keys.hmacShaKeyFor("Ensaligröramedmassaolikateckenharvihär".getBytes());
+
+       return Jwts.builder()
+               .setSubject(username)
+               .addClaims(Map.of("Role", role))
+               .signWith(key)
+               .compact();
+
+    }
+
+    public String getRole(String username) {
+
+        String token = createToken(username);
+        Key key = Keys.hmacShaKeyFor("Ensaligröramedmassaolikateckenharvihär".getBytes());
+
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .get("Role", String.class);
+    }
+
 }
